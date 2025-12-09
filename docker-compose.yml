@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  api:
+    build: ..
+    container_name: fastapi_guess_word
+    env_file:
+      - ../.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - ./app:/app
+
+  db:
+    image: postgres:15
+    container_name: guess_word_db
+    env_file:
+      - ../.env
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
