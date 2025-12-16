@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Depends
-from sqlmodel import SQLModel, Field, Session, create_engine,select
+from fastapi import FastAPI, Depends, Request
+from sqlmodel import SQLModel, Session, create_engine
 from dotenv import load_dotenv
-from typing import List
+from services.service_paraula import obtenir_paraula_aleatoria
 import os
 
 app = FastAPI()
@@ -16,3 +16,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@app.get("/paraula/{idioma}")
+def get_paraula(idioma: str, db: Session = Depends(get_db)):
+    return obtenir_paraula_aleatoria(idioma, db)
