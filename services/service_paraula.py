@@ -6,6 +6,7 @@ from crud.paraula_crud import get_paraules_per_idioma
 
 def obtenir_paraula_aleatoria(idioma: str, db: Session):
     try:
+        #Validem l'idioma
         if idioma not in ["ca", "es", "en"]:
             raise HTTPException(status_code=400, detail="Idioma invàlid")
 
@@ -13,7 +14,7 @@ def obtenir_paraula_aleatoria(idioma: str, db: Session):
 
         if not paraules:
             raise HTTPException(status_code=404, detail="No hi ha paraula disponible")
-
+        #Generem la paraula random
         paraula = choice(paraules)
 
         return {
@@ -22,10 +23,6 @@ def obtenir_paraula_aleatoria(idioma: str, db: Session):
 
     except IntegrityError:
         raise HTTPException(status_code=409, detail="Integrity error en consulta a BD")
-
-    except HTTPException:
-        raise
-
     except Exception:
         raise HTTPException(status_code=500, detail="Error intern del servidor")
 

@@ -1,6 +1,7 @@
 from sqlmodel import Session, select
-from models.paraula import Paraula
+from models.abecedari import Abecedari
 
-def get_diccionario(db: Session, idioma: str):
-    stmt = select(Paraula).where(Paraula.idioma == idioma)
+#Fem la consulta a la bd per obtenir l'abecedari d'un idioma concret
+def get_abecedario(db: Session, idioma: str):
+    stmt = select(Abecedari).where(Abecedari.idioma == idioma)
     return db.exec(stmt).all()
