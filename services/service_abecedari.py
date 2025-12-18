@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from sqlmodel import Session
 from sqlalchemy.exc import IntegrityError
+from models.abecedari import AbecedariResponse
 from crud.abecedario_crud import get_abecedario
 
 IDIOMES_SUPORTATS = ["ca", "es", "en"]
@@ -25,10 +26,10 @@ def obtenir_abecedari(idioma: str, db: Session):
         if not lletres:
             raise ValueError
 
-        return {
-            "idioma": idioma,
-            "lletres": lletres
-        }
+        return AbecedariResponse(
+            idioma=idioma,
+            lletres=lletres
+        )
 
     except ValueError:
         raise HTTPException(status_code=422, detail="Dades incorrectes")

@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from sqlmodel import Session
 from sqlalchemy.exc import IntegrityError
 from random import choice
+from models.paraula import ParaulaResponse
 from crud.paraula_crud import get_paraules_per_idioma
 
 def obtenir_paraula_aleatoria(idioma: str, db: Session):
@@ -17,9 +18,10 @@ def obtenir_paraula_aleatoria(idioma: str, db: Session):
         #Generem la paraula random
         paraula = choice(paraules)
 
-        return {
-            "paraula": paraula.paraula,
-        }
+        return ParaulaResponse(
+            paraula=paraula.paraula,
+            idioma=paraula.idioma
+        )
 
     except IntegrityError:
         raise HTTPException(status_code=409, detail="Integrity error en consulta a BD")
