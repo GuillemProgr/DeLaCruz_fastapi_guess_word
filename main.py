@@ -4,9 +4,11 @@ from dotenv import load_dotenv
 from models.abecedari import Abecedari, AbecedariResponse
 from models.paraula import Paraula, ParaulaResponse
 from models.instruccions import Instruccions, InstruccionsResponse
+from models.historial import Historial,HistorialResponse,HistorialRequest
 from services.service_paraula import obtenir_paraula_aleatoria
 from services.service_abecedari import obtenir_abecedari
 from services.service_instruccions import obtenir_instruccions
+from services.service_historial import guardar_partida, obtenir_historial
 import os
 
 app = FastAPI()
@@ -38,4 +40,16 @@ def get_paraula(idioma: str, db: Session = Depends(get_db)):
 @app.get("/instruccions/{idioma}", response_model=InstruccionsResponse)
 def get_instruccions(idioma: str, db: Session = Depends(get_db)):
     result =  obtenir_instruccions(idioma, db)
+    return result
+
+#Cuart endpoint primera part inserim informació
+@app.post("/historial", response_model=HistorialResponse)
+def post_historial(request: HistorialRequest,db: Session = Depends(get_db)):
+    result =  guardar_partida(request, db)
+    return result
+
+#Cinquè endpoint retornem la informació que hem inserit al post
+@app.get("/historial/{usuari}", response_model=list[HistorialResponse])
+def get_historial(usuari: str,db: Session = Depends(get_db)):
+    result = obtenir_historial(usuari, db)
     return result
