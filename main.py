@@ -9,9 +9,17 @@ from services.service_paraula import obtenir_paraula_aleatoria
 from services.service_abecedari import obtenir_abecedari
 from services.service_instruccions import obtenir_instruccions
 from services.service_historial import guardar_partida, obtenir_historial
+from starlette.middleware.cors import CORSMiddleware
 import os
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 load_dotenv()
 DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL)
